@@ -87,3 +87,23 @@ Screenshots and sample data are stored in the [`/screenshots`](./screenshots) an
 - Isolate EC2 instance instead of stopping it (e.g., apply a "quarantine" security group)
 - Store all findings in DynamoDB for later analysis
 - Add dashboard visualization using QuickSight or Grafana
+
+## 🛡️ Auto-Remediation: SSH Exposure via AWS Config
+
+### ✅ Objective
+Ensure that no security group in use allows unrestricted SSH access (0.0.0.0/0 on port 22), and automatically remediate any violations.
+
+### ⚙️ Configuration
+- **AWS Config Rule**: `INCOMING_SSH_DISABLED`
+- **IAM Role**: `AWSServiceRoleForConfig`
+- **Automation Document**: `AWS-DisablePublicAccessForSecurityGroup`
+- **Trigger**: Non-compliant rule evaluation
+
+### 🔄 Flow
+1. Security Group with public SSH is detected.
+2. AWS Config flags it as **non-compliant**.
+3. Auto-remediation kicks in and removes the 0.0.0.0/0 rule from port 22.
+4. Compliance status is updated.
+
+### 🧩 Benefit
+This automation ensures continuous compliance and reduces the risk of unauthorized SSH access with zero manual effort.
